@@ -10,6 +10,8 @@ public class MusicSettings : MonoBehaviour
     [SerializeField] private AudioSource _backGroundAudioSource;
 
     private float _masterVolume;
+    private float _minVolume = -80f;
+    private float _maxVolume = 0f;
 
     public void SetSong(int index)
     {
@@ -28,23 +30,23 @@ public class MusicSettings : MonoBehaviour
         }
         else
         {
-            _audioMixer.audioMixer.SetFloat("MasterVolume", -80);
+            _audioMixer.audioMixer.SetFloat("MasterVolume", _minVolume);
         }
     }
 
     public void ChangeMasterVolume(float volume)
     {
-        _masterVolume = Mathf.Lerp(-80, 0, volume);
+        _masterVolume = Mathf.Lerp(_minVolume, _maxVolume, volume);
         _audioMixer.audioMixer.SetFloat("MasterVolume", _masterVolume);
     }
 
     public void ChangeBackgroundVolume(float volume)
     {
-        _audioMixer.audioMixer.SetFloat("BackgroundVolume", Mathf.Lerp(-80, 0, volume));
+        _audioMixer.audioMixer.SetFloat("BackgroundVolume", Mathf.Log10(volume) * 20);
     }
 
     public void ChangeMusicVolume(float volume)
     {
-        _audioMixer.audioMixer.SetFloat("MusicVolume", Mathf.Lerp(-80, 0, volume));
+        _audioMixer.audioMixer.SetFloat("MusicVolume", Mathf.Log10(volume) * 20);
     }
 }
